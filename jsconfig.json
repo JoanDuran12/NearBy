@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(pages)/(auth)/login/page.jsx", "src/app/(pages)/(auth)/signup/page.jsx", "src/app/api/firebase/config.js", "src/app/components/Footer.jsx", "src/app/components/Header.jsx", "src/app/components/auth/Login.jsx", "src/app/components/auth/Signup.jsx", "src/app/page.jsx", "src/app/layout.jsx", "next.config.js", "src/app/contexts/AuthContext.jsx"],
   "exclude": ["node_modules"]
 }
