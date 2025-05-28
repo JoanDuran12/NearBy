@@ -87,7 +87,7 @@ export default function Signup() {
 
       setMessage("Account created successfully!");
       // Redirect to dashboard or home page after successful signup
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Signup error:", error);
       setError(getErrorMessage(error.code));
@@ -105,7 +105,7 @@ export default function Signup() {
       await loginWithGoogle();
       setMessage("Account created with Google successfully!");
       // Redirect after successful Google signup
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       const firebaseError = error;
       if (firebaseError.code !== "auth/popup-closed-by-user") {

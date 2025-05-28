@@ -38,7 +38,7 @@ export default function Login() {
       setMessage("Logged in successfully!");
 
       // Redirect to dashboard after successful login
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Login error:", error);
       setError(getErrorMessage(error.code));
@@ -57,7 +57,7 @@ export default function Login() {
       setMessage("Logged in with Google successfully!");
 
       // Redirect to dashboard after successful login
-      router.push("/dashboard");
+      router.push("/home");
     } catch (error) {
       console.error("Google sign-in error:", error);
 

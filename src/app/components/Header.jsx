@@ -61,7 +61,7 @@ export default function Header() {
 
   return (
     <header>
-      <div className="top-0 flex gap-40 items-center justify-between border-b border-green-900 w-full p-4 px-30 mb-6">
+      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-30 mb-6">
         <Link
           className="flex gap-2 justify-center items-center text-lg font-semibold"
           href="/"
@@ -112,10 +112,10 @@ export default function Header() {
                   <div className="p-1">
                     <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
                       <div className="font-medium">
-                        {!currentUser.displayName || "User"}
+                        {currentUser.displayName || "User"}
                       </div>
                       <div className="text-gray-500 text-xs">
-                        {!currentUser.email || "Email"}
+                        {currentUser.email || "Email"}
                       </div>
                     </div>
 
