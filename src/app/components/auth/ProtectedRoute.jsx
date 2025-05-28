@@ -30,11 +30,11 @@ export default function ProtectedRoute({ children }) {
 
   // Don't render anything if currentUser is not authenticated
   if (!currentUser) {
-    console.log("No user, Going to login page...");
+    console.log("No user found, redirecting to login...");
     return (
       <div className="flex justify-center items-center min-h-screen gap-4">
         <div className="animate-spin rounded-full size-12 border-b-2 border-gray-800"></div>
-        <p>User not found error.....</p>
+        <p>No user found, redirecting to login...</p>
       </div>
     );
   }

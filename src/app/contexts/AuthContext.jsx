@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
         (window.location.pathname === "/login" ||
           window.location.pathname === "/signup")
       ) {
-        router.push("/dashboard");
+        router.push("/home");
       }
     }
   }, [currentUser, loading, router]);
