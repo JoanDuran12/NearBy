@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full border-t px-24 py-4 flex items-center justify-between mt-6 ">
+    <footer className="w-full border-t border-gray-400 px-24 py-4 flex items-center justify-between mt-6 ">
       <Link href="/" className="flex items-center gap-2">
         <IconTicket stroke={2} className="size-8" />
         <span className="font-semibold text-xl">NearBy</span>
