@@ -5,12 +5,19 @@ import {
   IconUser,
   IconLogout,
   IconSettings,
+  IconHome,
+  IconMapPin,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-const NavItems = [{ name: "Discover Events", href: "#" }];
+const NavItems = [
+  { name: "Home", href: "/home", icon: IconHome },
+  { name: "Discover", href: "/discover", icon: IconMapPin },
+  { name: "Events", href: "/events", icon: IconTicket },
+  { name: "Profile", href: "/profile", icon: IconUser },
+];
 
 const GuestNavItems = [
   { name: "Sign Up", href: "/signup" },
@@ -61,26 +68,38 @@ export default function Header() {
 
   return (
     <header>
-      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-30 mb-6">
+      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-20 mb-6">
+        {/* Logo and Title */}
         <Link
-          className="flex gap-2 justify-center items-center text-lg font-semibold"
+          className="flex gap-1 justify-center items-center text-lg font-semibold"
           href="/"
         >
-          <IconTicket stroke={2} className="size-10" />
+          <IconTicket stroke={2} className="size-8" />
           <h2>NearBy</h2>
         </Link>
+        {/* Nav Var main Auth menu */}
+        {currentUser && (
+          <div className="flex ml-38">
+            {NavItems.map((item, index) => (
+              <Link
+                key={index}
+                className="flex justify-center gap-1 items-center hover:bg-gray-300 p-2 px-8 rounded-md font-semibold text-sm"
+                href={item.href}
+              >
+                <item.icon className="size-6" />
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        )}
         <div className="flex gap-4 justify-center items-center">
-          {/* Always show main nav items */}
-          {NavItems.map((item, index) => (
-            <Link
-              key={index}
-              className="hover:bg-gray-300 p-2 rounded-md font-semibold text-sm"
-              href={item.href}
-            >
-              {item.name}
-            </Link>
-          ))}
-          {/* Conditional rendering based on auth status */}
+          {/*Show discover or create buttom depending on user Auth state */}
+          <Link
+            className="hover:bg-gray-300 p-2 rounded-md font-semibold text-sm"
+            href={currentUser ? "/create" : "/discover"}
+          >
+            {currentUser ? "Create Event" : "Explore Events"}
+          </Link>
           {currentUser ? (
             // Authenticated user menu
             <div className="relative" ref={dropdownRef}>
@@ -110,24 +129,14 @@ export default function Header() {
               {isDropdownOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-50">
                   <div className="p-1">
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
+                    <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100 font-semibold">
                       <div className="font-medium">
                         {currentUser.displayName || "User"}
                       </div>
-                      <div className="text-gray-500 text-xs">
+                      <div className="text-gray-500 text-xs font-semibold">
                         {currentUser.email || "Email"}
                       </div>
                     </div>
-
-                    <Link
-                      href="/dashboard"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsDropdownOpen(false)}
-                    >
-                      <IconUser stroke={2} className="size-4" />
-                      Profile
-                    </Link>
-
                     <Link
                       href="/profile"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -136,10 +145,9 @@ export default function Header() {
                       <IconSettings stroke={2} className="size-4" />
                       Settings
                     </Link>
-
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      className="flex items-center gap-2  w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
                       <IconLogout stroke={2} className="size-4" />
                       Logout
