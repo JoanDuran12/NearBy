@@ -68,7 +68,7 @@ export default function Header() {
 
   return (
     <header>
-      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-20 mb-6">
+      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-18 mb-6">
         {/* Logo and Title */}
         <Link
           className="flex gap-1 justify-center items-center text-lg font-semibold"
@@ -83,7 +83,7 @@ export default function Header() {
             {NavItems.map((item, index) => (
               <Link
                 key={index}
-                className="flex justify-center gap-1 items-center hover:bg-gray-300 p-2 px-8 rounded-md font-semibold text-sm"
+                className="flex justify-center gap-1 items-center hover:bg-gray-300 p-2 px-6 rounded-md font-semibold text-sm"
                 href={item.href}
               >
                 <item.icon className="size-6" />
