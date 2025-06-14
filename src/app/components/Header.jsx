@@ -11,12 +11,13 @@ import {
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Settings from "@/app/components/Settings";
 
 const NavItems = [
   { name: "Home", href: "/home", icon: IconHome },
   { name: "Discover", href: "/discover", icon: IconMapPin },
   { name: "Events", href: "/events", icon: IconTicket },
-  { name: "Profile", href: "/profile", icon: IconUser },
+  { name: "Profile", href: "/user", icon: IconUser },
 ];
 
 const GuestNavItems = [
@@ -27,7 +28,32 @@ const GuestNavItems = [
 export default function Header() {
   const { currentUser, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [settingDropDown, setSettingDropDown] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
   const dropdownRef = useRef(null);
+
+  // Get user data from API once when component mounts or currentUser changes
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (currentUser?.uid) {
+          const response = await fetch(`/api/user/${currentUser.uid}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+          const data = await response.json();
+          setUserData(data.user);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // Add useEffect to monitor auth state changes
   useEffect(() => {
@@ -42,6 +68,11 @@ export default function Header() {
         : "Not logged in"
     );
   }, [currentUser]);
+
+  // Handle Setting close
+  const handleSettingsClose = () => {
+    setSettingDropDown(false);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -66,6 +97,7 @@ export default function Header() {
     }
   };
 
+  if (loading) return <div className="hidden">Loading</div>;
   return (
     <header>
       <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-18 mb-6">
@@ -119,9 +151,7 @@ export default function Header() {
                   </div>
                 )}
                 <span className="hidden sm:block">
-                  {currentUser.displayName ||
-                    currentUser.email?.split("@")[0] ||
-                    "User"}
+                  {userData.name} {userData.lastname}
                 </span>
               </button>
 
@@ -131,20 +161,22 @@ export default function Header() {
                   <div className="p-1">
                     <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100 font-semibold">
                       <div className="font-medium">
-                        {currentUser.displayName || "User"}
+                        {userData.name} {userData.lastname}
                       </div>
                       <div className="text-gray-500 text-xs font-semibold">
-                        {currentUser.email || "Email"}
+                        {userData.email || "Email"}
                       </div>
                     </div>
-                    <Link
-                      href="/profile"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsDropdownOpen(false)}
+                    <button
+                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => {
+                        setSettingDropDown(true);
+                        setIsDropdownOpen(!isDropdownOpen);
+                      }}
                     >
                       <IconSettings stroke={2} className="size-4" />
                       Settings
-                    </Link>
+                    </button>
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2  w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -169,6 +201,8 @@ export default function Header() {
             ))
           )}
         </div>
+
+        {settingDropDown && <Settings onClose={handleSettingsClose} />}
       </div>
     </header>
   );

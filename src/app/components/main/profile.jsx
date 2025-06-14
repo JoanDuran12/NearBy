@@ -3,10 +3,39 @@
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { IconCalendar } from "@tabler/icons-react";
-// import { useAuthRedirect } from "@/app/hooks/useAuthRedirect";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      try {
+        if (currentUser?.uid) {
+          const response = await fetch(`/api/user/${currentUser.uid}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch user profile");
+          }
+          const data = await response.json();
+          setUserProfile(data.user);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUserProfile();
+  }, [currentUser]);
+
+  if (loading) return <div className="min-h-screen max-w-4xl">Loading...</div>;
+  if (error)
+    return <div className="min-h-screen max-w-4xl">Error: {error}</div>;
+  if (!userProfile && !currentUser)
+    return <div className="min-h-screen max-w-4xl">User not found</div>;
 
   return (
     <ProtectedRoute>
@@ -27,17 +56,29 @@ export default function Dashboard() {
                 </div>
               )}
               <div className="flex flex-col gap-y-1">
-                <h1 className="text-3xl">{currentUser.displayName}</h1>
-                <h1>@JoanDuran1212</h1>
+                <h1 className="text-3xl">
+                  {userProfile.name} {userProfile.lastname}
+                </h1>
+                <h1>{userProfile.username}</h1>
                 <div className="flex gap-1 item-center">
                   <IconCalendar stroke={2} />
-                  <h1>Joined Jan 2024</h1>
+                  <h1>
+                    {new Date(userProfile.createdAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </h1>
                 </div>
               </div>
             </div>
-            <button className="bg-white font-semibold border border-gray-200 px-4 py-1 rounded-xl hover:bg-gray-600 hover:text-white">
+            {/* Follow Feature Coming Soon */}
+            {/* <button className="bg-white font-semibold border border-gray-200 px-4 py-1 rounded-xl hover:bg-gray-600 hover:text-white">
               Follow
-            </button>
+            </button> */}
           </div>
           {/* Quick Profile Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

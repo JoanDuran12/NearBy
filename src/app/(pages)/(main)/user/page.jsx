@@ -3,7 +3,7 @@ import Layout from "@/app/layout";
 import Header from "@/app/components/Header";
 import Profile from "@/app/components/main/profile";
 
-export default function ProfilePage() {
+export default function userPage() {
   return (
     <Layout>
       <Header />
