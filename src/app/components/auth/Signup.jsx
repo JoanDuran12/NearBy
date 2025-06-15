@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function Signup() {
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,9 +17,20 @@ export default function Signup() {
   const { signup, loginWithGoogle, updateUserProfile } = useAuth();
   const router = useRouter();
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    setError(""); // Clear error when user starts typing
+  // const handleNameChange = (e) => {
+  //   setName(e.target.value);
+  //   setError(""); // Clear error when user starts typing
+  // };
+
+  // Check if its the first time the user is loggging into the account
+  const checkUserProfile = async (uid) => {
+    try {
+      const response = await fetch(`/api/users/${uid}`);
+      return response.ok;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -86,8 +97,8 @@ export default function Signup() {
       }
 
       setMessage("Account created successfully!");
-      // Redirect to dashboard or home page after successful signup
-      router.push("/home");
+      // Redirect to onboarding to finalize detail info
+      router.push("/onboarding");
     } catch (error) {
       console.error("Signup error:", error);
       setError(getErrorMessage(error.code));
@@ -102,10 +113,18 @@ export default function Signup() {
       setMessage("");
       setLoading(true);
 
-      await loginWithGoogle();
+      const result = await loginWithGoogle();
       setMessage("Account created with Google successfully!");
-      // Redirect after successful Google signup
-      router.push("/home");
+
+      // Check if user profile exists
+      const hasProfile = await checkUserProfile(result.user.uid);
+
+      // Redirect to home if user has a profile in DB, if not redirect to onboarding
+      if (hasProfile) {
+        router.push("/home");
+      } else {
+        router.push("/onboarding");
+      }
     } catch (error) {
       const firebaseError = error;
       if (firebaseError.code !== "auth/popup-closed-by-user") {
@@ -160,7 +179,7 @@ export default function Signup() {
             className="flex flex-col gap-4 mb-6 text-base"
             onSubmit={handleSubmit}
           >
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <label className="font-semibold" htmlFor="name">
                 Full Name
               </label>
@@ -175,7 +194,7 @@ export default function Signup() {
                 required
                 disabled={loading}
               />
-            </div>
+            </div> */}
             <div className="flex flex-col">
               <label className="font-semibold" htmlFor="email">
                 Email

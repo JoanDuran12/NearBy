@@ -1,21 +1,26 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const User = require('./user');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const User = require("./user");
 
-const Event = sequelize.define('Event', {
+const Event = sequelize.define("Event", {
   eventId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
+  eventPic: DataTypes.STRING,
   eventName: DataTypes.STRING,
-  startTime: DataTypes.TIME,
-  endTime: DataTypes.TIME,
   startDate: DataTypes.DATEONLY,
   endDate: DataTypes.DATEONLY,
-  location: DataTypes.STRING
+  startTime: DataTypes.TIME,
+  endTime: DataTypes.TIME,
+  location: DataTypes.STRING,
+  description: DataTypes.STRING,
+  category: DataTypes.STRING,
+  approval: DataTypes.BOOLEAN,
+  capacity: DataTypes.INTEGER,
 });
 
-Event.belongsTo(User, { foreignKey: 'userId' });
+Event.belongsTo(User, { foreignKey: "firebaseUid" });
 
 module.exports = Event;

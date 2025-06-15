@@ -83,11 +83,10 @@ export const AuthProvider = ({ children }) => {
       // If we're on the login page but user is logged in, redirect to dashboard
       if (
         currentUser &&
-        (
-          window.location.pathname === "/login" ||
+        (window.location.pathname === "/login" ||
           window.location.pathname === "/signup" ||
-          window.location.pathname === "/"
-        )
+          window.location.pathname === "/" ||
+          window.location.pathname === " ")
       ) {
         router.push("/home");
       }

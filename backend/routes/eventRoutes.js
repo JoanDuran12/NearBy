@@ -2,6 +2,7 @@ const express = require('express');
 const { Event } = require('../models');
 const router = express.Router();
 
+// Create new Event
 router.post('/', async (req, res) => {
   try {
     const event = await Event.create(req.body);
@@ -11,6 +12,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Get all the events
 router.get('/', async (req, res) => {
   const events = await Event.findAll();
   res.json(events);
