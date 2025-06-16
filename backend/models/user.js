@@ -1,18 +1,30 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes, NOW } = require("sequelize");
+const sequelize = require("../config/database");
 
-const User = sequelize.define('User', {
+const User = sequelize.define("User", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  name: DataTypes.STRING,
+  firebaseUid: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   username: {
     type: DataTypes.STRING,
-    unique: true
+    unique: true,
   },
-  profilePic: DataTypes.STRING
+  profilePic: DataTypes.STRING,
 });
 
 module.exports = User;

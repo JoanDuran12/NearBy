@@ -24,6 +24,17 @@ export default function Login() {
     setError(""); // Clear error when user starts typing
   };
 
+  // Check if its the first time the user is loggging into the account
+  const checkUserProfile = async (uid) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/users${uid}`);
+      return response.ok;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,12 +44,18 @@ export default function Login() {
       setMessage("");
       setLoading(true);
 
-      await login(email, password);
-
+      const result = await login(email, password);
       setMessage("Logged in successfully!");
 
-      // Redirect to dashboard after successful login
-      router.push("/home");
+      // Check if user profile exists
+      const hasProfile = await checkUserProfile(result.user.uid);
+
+      // Redirect to home if user has a profile in DB, if not redirect to onboarding
+      if (hasProfile) {
+        router.push("/home");
+      } else {
+        router.push("/onboarding");
+      }
     } catch (error) {
       console.error("Login error:", error);
       setError(getErrorMessage(error.code));
@@ -53,11 +70,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await loginWithGoogle();
+      const result = await loginWithGoogle();
       setMessage("Logged in with Google successfully!");
 
-      // Redirect to dashboard after successful login
-      router.push("/home");
+      // Check if user profile exists
+      const hasProfile = await checkUserProfile(result.user.uid);
+
+      // Redirect to home if user has a profile in DB, if not redirect to onboarding
+      if (hasProfile) {
+        router.push("/home");
+      } else {
+        router.push("/onboarding");
+      }
     } catch (error) {
       console.error("Google sign-in error:", error);
 
@@ -65,9 +89,7 @@ export default function Login() {
         error.code === "auth/popup-closed-by-user" ||
         error.code === "auth/cancelled-popup-request"
       ) {
-        setError(
-          "PopUp was closed. Please try again."
-        );
+        setError("PopUp was closed. Please try again.");
         return;
       } else {
         setError("An error occurred during Google sign-in. Please try again.");
