@@ -104,10 +104,10 @@ export default function Header() {
       <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-18 mb-6">
         {/* Logo and Title */}
         <Link
-          className="flex gap-1 justify-center items-center text-2xl font-bold"
+          className="flex gap-1 justify-center items-center text-xl font-bold"
           href="/"
         >
-          <IconTicket stroke={2} className="size-8" />
+          <IconTicket stroke={2} className="size-7" />
           <h2>NearBy</h2>
         </Link>
         {/* Nav Var main Auth menu */}

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import { useRouter } from "next/navigation";
 import {
   IconMapPin,
   IconFileDescription,
@@ -10,10 +11,8 @@ import {
   IconInnerShadowBottom,
   IconCategory,
 } from "@tabler/icons-react";
-import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function CreateEvent() {
-  const { currentUser } = useAuth();
   const [eventName, setEventName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -25,10 +24,13 @@ export default function CreateEvent() {
   const [capacity, setCapacity] = useState("");
   const [category, setCategory] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const router = useRouter();
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
     }
@@ -78,35 +80,33 @@ export default function CreateEvent() {
     e.preventDefault();
 
     try {
+      const formData = new FormData();
+      if (imageFile) {
+        formData.append("eventPic", imageFile);
+      }
+      formData.append("eventName", eventName);
+      formData.append("startDate", startDate);
+      formData.append("endDate", endDate);
+      formData.append("startTime", startTime);
+      formData.append("endtime", endTime);
+      formData.append("location", location);
+      formData.append("description", description);
+      formData.append("category", category);
+      formData.append("approval", requiredApproval);
+      formData.append("capacity", capacity);
+
       const response = await fetch(`http://localhost:5000/api/events`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          eventPic: previewImage,
-          eventName: eventName,
-          startDate: startDate,
-          endDate: endDate,
-          startTime: startTime,
-          endtime: endTime,
-          location: location,
-          description: description,
-          category: category,
-          approval: requiredApproval,
-          capacity: capacity,
-          firebaseUid: currentUser.uid,
-        }),
-      }.
-    console.log(response.body));
+        body: formData,
+      });
 
       if (!response.ok) {
-        console.log(response)
+        console.log(response);
         throw new Error("Something went wrong");
       }
       router.push("/home");
     } catch (error) {
-     console.log(error.message);
+      console.log(error.message);
     }
   };
 
@@ -114,7 +114,7 @@ export default function CreateEvent() {
     <ProtectedRoute>
       <div className="flex flex-col items-center justify-center w-screen py-10 font-semibold text-base">
         <div className="flex flex-col item-center justify-center gap-5 md:w-1/2 lg:w-1/3 ">
-          <div className="w-full aspect-[4/3] rounded-xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 relative">
+          <div className="w-full aspect-[4/3] object-scale-down rounded-xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 relative">
             {previewImage ? (
               <img
                 src={previewImage}
@@ -122,14 +122,19 @@ export default function CreateEvent() {
                 className="object-cover w-full h-full"
               />
             ) : (
-              <span className="text-gray-400">Upload Event Image</span>
+              <span className="text-gray-400">
+                Upload Event Image ( Ideal Ratio is 1:1 )
+              </span>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
+            
+              <input
+                type="file"
+                accept="image/*"
+                name="eventPic"
+                onChange={handleImageChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
+            
           </div>
           <div className="flex flex-col bg-white rounded-lg">
             <textarea

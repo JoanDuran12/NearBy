@@ -1,3 +1,5 @@
+"use strict";
+
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const User = require("./user");
@@ -21,6 +23,6 @@ const Event = sequelize.define("Event", {
   capacity: DataTypes.INTEGER,
 });
 
-Event.belongsTo(User, { foreignKey: "firebaseUid" });
+Event.belongsTo(User, { foreignKey: "firebaseUid", sourceKey: "firebaseUid" });
 
 module.exports = Event;
