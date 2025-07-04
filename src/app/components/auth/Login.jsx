@@ -134,9 +134,9 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="flex items-center justify-center rounded-xl shadow-lg border border-gray-300">
-        <div className="flex flex-col p-10 mx-10 md:w-[400px] border-gray-300">
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col sm:w-[400px]">
           <div className="flex flex-col items-center pb-8">
             <h1 className="text-4xl font-semibold">Welcome Back</h1>
             <span className="text-sm text-gray-400">
@@ -212,6 +212,11 @@ export default function Login() {
               >
                 {loading ? "Logging in..." : "Log In"}
               </button>
+              <div className="flex items-center my-2">
+                <hr className="flex-grow border-gray-400" />
+                <span className="mx-2 text-gray-500 text-sm">OR</span>
+                <hr className="flex-grow border-gray-400" />
+              </div>
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
