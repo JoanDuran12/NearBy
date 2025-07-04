@@ -53,10 +53,10 @@ export default function Signup() {
   };
 
   const validateForm = () => {
-    if (!name.trim()) {
-      setError("Please enter your full name");
-      return false;
-    }
+    // if (!name.trim()) {
+    //   setError("Please enter your full name");
+    //   return false;
+    // }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");

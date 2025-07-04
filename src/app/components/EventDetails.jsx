@@ -72,16 +72,16 @@ export default function EventDetailsPage() {
           <img
             src={event?.eventPic || "/placeholder.jpg"}
             alt={event?.eventName || "Event image"}
-            className="w-full max-w-md h-64 rounded-lg object-cover border"
+            className="rounded-xl w-full h-auto max-h-[250px] object-cover border"
           />
         </div>
         <div className="flex flex-col justify-between w-full md:w-1/2">
           <h2 className="font-bold text:xl md:text-2xl mb-2 break-words leading-tight">
             {event.eventName || "Event Name"}
           </h2>
-          <div className="flex flex-col gap-3 mb-4">
-            <div className="flex items-center gap-2">
-              <IconCalendarFilled className="text-blue-500" />
+          <div className="flex flex-col gap-3 mb-4 text-sm md:text-md xl:text-base">
+            <div className="flex items-center ">
+              <IconCalendarFilled className="text-blue-500 mr-2" />
               <span>
                 <span className="font-semibold">Start:</span>{" "}
                 {new Date(event.startDate).toLocaleDateString(undefined, {
@@ -100,8 +100,8 @@ export default function EventDetailsPage() {
                 })}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <IconClock className="text-blue-500" />
+            <div className="flex items-center">
+              <IconClock className="text-blue-500 mr-2" />
               <span>
                 <span className="font-semibold">From:</span>{" "}
                 {event.startTime ? formatTimeToAMPM(event.startTime) : "N/A"}
@@ -112,21 +112,26 @@ export default function EventDetailsPage() {
                 {event.endTime ? formatTimeToAMPM(event.endTime) : "N/A"}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <IconMapPin className="text-blue-500" />
+            <div className="flex items-center">
+              <IconMapPin className="text-blue-500 mr-2" />
               <span>{event.location || "N/A"}</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2">
               <span className="font-semibold text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
                 {event.category || "N/A"}
               </span>
+              <button className="font-semibold text-sm px-3 py-2 rounded-md bg-gray-300 hover:underline">
+                Register
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="shadow-lg rounded-xl bg-white p-6 mt-8">
-        <h3 className="font-bold text-xl mb-2">About event:</h3>
-        <p className="text-gray-700">{event.description || "No description available."}</p>
+        <h3 className="font-bold text-md md:text-xl mb-2">About event:</h3>
+        <p className="text-gray-700 text-sm md:text-base ">
+          {event.description || "No description available."}
+        </p>
       </div>
     </div>
   );
