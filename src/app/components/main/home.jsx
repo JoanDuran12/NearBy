@@ -14,70 +14,6 @@ const Home = () => {
   });
   const [showPreferences, setShowPreferences] = useState(false);
 
-  // Mock events database
-  // const allEvents = [
-  //   {
-  //     id: 1,
-  //     title: "Tech Innovation Summit 2024",
-  //     date: "2024-07-10",
-  //     location: "New York",
-  //     description:
-  //       "Discover the latest in AI, blockchain, and emerging technologies that will shape our future.",
-  //     category: "Technology",
-  //     price: "paid",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Jazz Night Downtown",
-  //     date: "2024-07-15",
-  //     location: "New York",
-  //     description:
-  //       "Enjoy smooth jazz performances by local and international artists in an intimate setting.",
-  //     category: "Music",
-  //     price: "free",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Modern Art Exhibition",
-  //     date: "2024-07-20",
-  //     location: "Chicago",
-  //     description:
-  //       "Explore contemporary art from emerging artists showcasing innovative techniques.",
-  //     category: "Art",
-  //     price: "paid",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "React Developer Meetup",
-  //     date: "2024-07-25",
-  //     location: "San Francisco",
-  //     description:
-  //       "Connect with React developers and learn best practices for modern web development.",
-  //     category: "Technology",
-  //     price: "free",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Classical Music Concert",
-  //     date: "2024-08-01",
-  //     location: "New York",
-  //     description:
-  //       "Experience beautiful classical music performed by the renowned symphony orchestra.",
-  //     category: "Music",
-  //     price: "paid",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Food & Wine Festival",
-  //     date: "2024-08-05",
-  //     location: "New York",
-  //     description:
-  //       "Taste exquisite food and wine from top chefs and vineyards around the world.",
-  //     category: "Food",
-  //     price: "paid",
-  //   },
-  // ];
-
   const categories = [
     "Technology",
     "Music",
@@ -122,7 +58,7 @@ const Home = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch events");
         }
-        const data = await response.json().then(data => {
+        const data = await response.json().then((data) => {
           setRecommendedEvents(data);
           setLoading(false);
         });
@@ -154,11 +90,11 @@ const Home = () => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen">
+      <div className="min-h-screen my-10">
         {/* Header */}
         <div className="sticky z-10">
           <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:justify-between">
               <div>
                 <h1 className="text-3xl font-bold">Welcome Back!</h1>
                 <p className="text-gray-600 mt-1">

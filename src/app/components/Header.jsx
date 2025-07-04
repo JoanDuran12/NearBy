@@ -6,7 +6,6 @@ import {
   IconLogout,
   IconSettings,
   IconHome,
-  IconMapPin,
   IconLogin,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -16,7 +15,6 @@ import Settings from "@/app/components/Settings";
 
 const NavItems = [
   { name: "Home", href: "/home", icon: IconHome },
-  // { name: "Discover", href: "/discover", icon: IconMapPin },
   { name: "Events", href: "/events", icon: IconTicket },
   { name: "Profile", href: "/user", icon: IconUser },
 ];
@@ -101,10 +99,10 @@ export default function Header() {
   // if (loading) return <div className="hidden">Loading</div>;
   return (
     <header>
-      <div className="top-0 flex gap-40 items-center justify-between border-b border-gray-400 w-full p-4 px-18 mb-6">
+      <div className="top-0 flex items-center justify-between border-b border-gray-400 w-full p-4 md:px-18">
         {/* Logo and Title */}
         <Link
-          className="flex gap-1 justify-center items-center text-xl font-bold"
+          className="flex gap-1 justify-center items-center md:text-xl font-bold"
           href="/"
         >
           <IconTicket stroke={2} className="size-7" />
@@ -112,7 +110,7 @@ export default function Header() {
         </Link>
         {/* Nav Var main Auth menu */}
         {currentUser && (
-          <div className="flex">
+          <div className="flex max-xl:hidden">
             {NavItems.map((item, index) => (
               <Link
                 key={index}
@@ -125,10 +123,10 @@ export default function Header() {
             ))}
           </div>
         )}
-        <div className="flex gap-4 justify-center items-center">
+        <div className="flex justify-center items-center md:gap-4">
           {/*Show discover or create buttom depending on user Auth state */}
           <Link
-            className="hover:bg-gray-300 p-2 rounded-md font-semibold text-sm"
+            className="hover:bg-gray-300 rounded-md font-semibold text-sm p-1 md:p-2"
             // href={currentUser ? "/create" : "/discover"}
             href={currentUser ? "/create" : ""}
           >
@@ -160,7 +158,7 @@ export default function Header() {
 
               {/* Dropdown menu */}
               {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-300 z-50">
                   <div className="p-1">
                     <div className="px-2 py-2 text-base text-gray-700 border-b border-gray-100 font-semibold">
                       <div className="font-medium">
@@ -196,7 +194,7 @@ export default function Header() {
             GuestNavItems.map((item, index) => (
               <Link
                 key={index}
-                className="flex items-center gap-2 hover:bg-gray-300 py-2 px-2 rounded-md font-semibold text-md"
+                className="flex items-center gap-2 hover:bg-gray-300 py-2 px-2 rounded-md font-semibold text-sm"
                 href={item.href}
               >
                 {item.icon && <item.icon className="size-6" />}
