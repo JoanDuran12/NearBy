@@ -7,36 +7,36 @@ import ProtectedRoute from "../auth/ProtectedRoute";
 const mockEvents = [
   {
     id: 1,
-    title: "React Conference 2024",
-    date: "2024-07-10",
+    eventName: "React Conference 2024",
+    startDate: "2025-07-10",
     location: "New York",
     description: "A conference about React and related technologies.",
   },
   {
     id: 2,
-    title: "JavaScript Meetup",
-    date: "2023-12-15",
+    eventName: "JavaScript Meetup",
+    startDate: "2025-12-15",
     location: "San Francisco",
     description: "Meetup for JavaScript enthusiasts.",
   },
   {
     id: 3,
-    title: "Tech Expo",
-    date: "2024-08-20",
+    eventName: "Tech Expo",
+    startDate: "2024-08-20",
     location: "Chicago",
     description: "Annual technology exposition.",
   },
   {
     id: 4,
-    title: "Tech Expo",
-    date: "2024-08-20",
+    eventName: "Tech Expo",
+    startDate: "2024-08-20",
     location: "Chicago",
     description: "Annual technology exposition.",
   },
   {
     id: 5,
-    title: "Tech Expo",
-    date: "2024-08-20",
+    eventName: "Tech Expo",
+    startDate: "2024-08-20",
     location: "Chicago",
     description: "Annual technology exposition.",
   },
@@ -48,7 +48,7 @@ export default function Events() {
   const [showPast, setShowPast] = useState(false);
 
   const filteredEvents = mockEvents.filter((event) =>
-    showPast ? isPastEvent(event.date) : !isPastEvent(event.date)
+    showPast ? isPastEvent(event.startDate) : !isPastEvent(event.startDate)
   );
 
   return (
