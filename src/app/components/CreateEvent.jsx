@@ -112,7 +112,7 @@ export default function CreateEvent() {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col items-center justify-center w-screen py-10 font-semibold text-base">
+      <div className="flex flex-col items-center justify-center w-screen my-20 font-semibold text-base">
         <div className="flex flex-col item-center justify-center gap-5 md:w-1/2 lg:w-1/3 ">
           <div className="w-full aspect-[4/3] object-scale-down rounded-xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 relative">
             {previewImage ? (

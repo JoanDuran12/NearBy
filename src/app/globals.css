@@ -6,7 +6,7 @@
   --foreground: #171717;
 }
 
-@theme inline {
+inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -21,7 +21,7 @@
 } */
 
 body {
-  background: var(--background);
+  background-color: #fdfcfb;
   color: var(--foreground);
   font-family: "Onest Variable", sans-serif;
 }
