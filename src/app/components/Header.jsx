@@ -134,7 +134,7 @@ export default function Header() {
             {currentUser ? "Create Event" : ""}
           </Link>
           {currentUser ? (
-            // Authenticated user menu
+            // Authenticated User Menu
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -151,9 +151,6 @@ export default function Header() {
                     <IconUser stroke={2} className="size-5 text-white" />
                   </div>
                 )}
-                <span className="hidden sm:block">
-                  {currentUser.displayName || "User"}
-                </span>
               </button>
 
               {/* Dropdown menu */}
