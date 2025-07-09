@@ -27,7 +27,7 @@ export default function Login() {
   // Check if its the first time the user is loggging into the account
   const checkUserProfile = async (uid) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users${uid}`);
+      const response = await fetch(`http://localhost:5000/api/users/${uid}`);
       return response.ok;
     } catch (error) {
       console.log(error);
