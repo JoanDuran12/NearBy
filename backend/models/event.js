@@ -17,7 +17,7 @@ const Event = sequelize.define("Event", {
   startTime: DataTypes.TIME,
   endTime: DataTypes.TIME,
   location: DataTypes.STRING,
-  description: DataTypes.STRING,
+  description: DataTypes.TEXT,
   category: DataTypes.STRING,
   approval: DataTypes.BOOLEAN,
   capacity: DataTypes.INTEGER,
