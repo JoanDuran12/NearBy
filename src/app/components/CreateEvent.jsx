@@ -88,7 +88,7 @@ export default function CreateEvent() {
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
       formData.append("startTime", startTime);
-      formData.append("endtime", endTime);
+      formData.append("endTime", endTime);
       formData.append("location", location);
       formData.append("description", description);
       formData.append("category", category);
