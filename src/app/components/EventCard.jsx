@@ -7,8 +7,6 @@ export default function EventCard({ event }) {
     return text.substring(0, maxLength).trim() + "...";
   };
 
-  console.log(event.eventPic);
-
   return (
     <Link href={`/events/${event.eventId}`}>
       <div className="w-[400px] max-w-sm mx-auto rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 mb-6 border border-gray-400">

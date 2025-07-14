@@ -128,9 +128,7 @@ export default function EventDetailsPage() {
         throw new Error("Something went wrong");
       }
 
-      const data = await response.json();
       setIsRegistered(false);
-      console.log(data);
     } catch (error) {
       console.log(error.message);
     }
