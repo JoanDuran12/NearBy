@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   res.json(events);
 });
 
-// Get a specific registration log
+// Get a user event specific registration log
 router.get("/:firebaseUid/:eventId", async (req, res) => {
   try {
     const { firebaseUid, eventId } = req.params;
@@ -28,7 +28,28 @@ router.get("/:firebaseUid/:eventId", async (req, res) => {
     }
 
     res.json(event);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
+// Get all events where users are registered
+router.get("/:firebaseUid", async (req, res) => {
+  try {
+    const { firebaseUid } = req.params;
+    const event = await Atendees.findAll({
+      where: {
+        firebaseUid,
+      },
+    });
+
+    if (!event) {
+      return res.status(404).json({
+        error: "There is not previous user data",
+      });
+    }
+
+    res.json(event);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
