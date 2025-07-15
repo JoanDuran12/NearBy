@@ -2,6 +2,7 @@
 
 const express = require("express");
 const { Event } = require("../models");
+const { Atendees } = require("../models/atendees");
 const router = express.Router();
 
 const multer = require("multer");
@@ -26,9 +27,9 @@ router.post("/", upload.single("eventPic"), async (req, res) => {
     const eventData = { ...req.body };
     if (req.file) {
       eventData.eventPic = req.file.filename; // Only store the filename string
-      console.log("Uploaded file Name path:", req.file.filename);
     }
     const event = await Event.create(eventData);
+
     res.json(event);
   } catch (err) {
     res.status(500).json({ error: err.message });

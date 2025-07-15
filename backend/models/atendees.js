@@ -1,4 +1,4 @@
-const { DataTypes, NOW } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const User = require("./user");
 const Event = require("./event");
