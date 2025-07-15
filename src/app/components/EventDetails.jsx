@@ -101,15 +101,13 @@ export default function EventDetailsPage() {
       });
 
       if (!response.ok) {
-        console.log(await response.json());
         throw new Error("Something went wrong");
       }
 
       const data = await response.json();
       setIsRegistered(true);
-      console.log(data);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     }
   };
 
@@ -127,13 +125,12 @@ export default function EventDetailsPage() {
       );
 
       if (!response.ok) {
-        console.log(await response.json());
         throw new Error("Something went wrong");
       }
 
       setIsRegistered(false);
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     }
   };
 
