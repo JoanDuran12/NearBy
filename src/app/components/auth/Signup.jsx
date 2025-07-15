@@ -53,10 +53,10 @@ export default function Signup() {
   };
 
   const validateForm = () => {
-    if (!name.trim()) {
-      setError("Please enter your full name");
-      return false;
-    }
+    // if (!name.trim()) {
+    //   setError("Please enter your full name");
+    //   return false;
+    // }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -151,10 +151,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center my-20">
-      <div className="flex items-center justify-center rounded-xl shadow-lg border border-gray-300">
-        <div className="flex flex-col p-12 mx-8 w-[400px] border-gray-300">
-          <div className="flex flex-col items-center pb-6">
+    <div className="flex min-h-screen items-center justify-center ">
+      <div className="flex items-center py-20 justify-center">
+        <div className="flex flex-col sm:w-[400px]">
+          <div className="flex flex-col items-center pb-8">
             <h1 className="text-4xl font-semibold">Create Account</h1>
             <span className="text-sm text-gray-400">
               Join us today! Please fill in your details
@@ -270,6 +270,11 @@ export default function Signup() {
               >
                 {loading ? "Creating Account..." : "Create Account"}
               </button>
+              <div className="flex items-center my-2">
+                <hr className="flex-grow border-gray-400" />
+                <span className="mx-2 text-gray-500 text-sm">OR</span>
+                <hr className="flex-grow border-gray-400" />
+              </div>
               <button
                 type="button"
                 onClick={handleGoogleSignUp}

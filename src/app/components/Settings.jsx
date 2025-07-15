@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 
 // Mock API calls (replace with real API calls)
 const fetchUserInfo = async () => ({
-  name: "John Doe",
-  email: "john@example.com",
-  age: 28,
+  name: "Joan Duran",
+  email: "joanmanuel808@gmail.com",
+  // age: 28,
 });
 const fetchUserPreferences = async () => ({
   theme: "Dark",
@@ -57,14 +57,14 @@ export default function Settings({ onClose }) {
             >
               Information
             </button>
-            <button
+            {/* <button
               className={`text-left py-2 px-3 rounded hover:bg-gray-200 ${
                 activeTab === "Preferences" ? "bg-gray-200 font-bold" : ""
               }`}
               onClick={() => setActiveTab("Preferences")}
             >
               Preferences
-            </button>
+            </button> */}
             <button
               className={`text-left py-2 px-3 rounded text-red-600 hover:bg-gray-200 ${
                 activeTab === "Delete" ? "bg-gray-200 font-bold" : ""
@@ -87,16 +87,16 @@ export default function Settings({ onClose }) {
                     <li>
                       <strong>Email:</strong> {userInfo.email}
                     </li>
-                    <li>
+                    {/* <li>
                       <strong>Age:</strong> {userInfo.age}
-                    </li>
+                    </li> */}
                   </ul>
                 ) : (
                   <div>Loading...</div>
                 )}
               </div>
             )}
-            {activeTab === "Preferences" && (
+            {/* {activeTab === "Preferences" && (
               <div>
                 <h2 className="text-xl font-semibold mb-4">Preferences</h2>
                 {preferences ? (
@@ -113,7 +113,7 @@ export default function Settings({ onClose }) {
                   <div>Loading...</div>
                 )}
               </div>
-            )}
+            )} */}
             {activeTab === "Delete" && (
               <div>
                 <h2 className="text-xl font-semibold mb-4 text-red-600">

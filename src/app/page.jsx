@@ -1,12 +1,13 @@
 import Layout from "./layout";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <Layout>
       <Header />
-      <main className="flex flex-col items-center justify-center min-h-[calc(100vh-160px)] bg-white text-black px-6">
+      <main className="flex flex-col min-h-screen items-center justify-center text-black px-6">
         <div className="max-w-7xl w-full flex flex-col lg:flex-row items-center justify-between py-24 gap-16">
           {/* Text Section */}
           <div className="flex flex-col max-w-xl text-left">
@@ -20,9 +21,9 @@ export default function Home() {
               Set up an event page, invite friends and sell tickets.
               Host a memorable event today.
             </p>
-            <button className="px-6 py-3 bg-black text-white font-medium rounded-full shadow hover:bg-gray-800 transition">
+            <Link href={"/login"} className="px-6 py-3 bg-black text-center text-white font-medium rounded-full shadow hover:bg-gray-800 transition">
               Create Your First Event
-            </button>
+            </Link>
           </div>
 
           {/* Image Section */}

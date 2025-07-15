@@ -1,55 +1,73 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EventCard from "../EventCard";
 import ProtectedRoute from "../auth/ProtectedRoute";
+import { useAuth } from "@/app/contexts/AuthContext";
 
-const mockEvents = [
-  {
-    id: 1,
-    title: "React Conference 2024",
-    date: "2024-07-10",
-    location: "New York",
-    description: "A conference about React and related technologies.",
-  },
-  {
-    id: 2,
-    title: "JavaScript Meetup",
-    date: "2023-12-15",
-    location: "San Francisco",
-    description: "Meetup for JavaScript enthusiasts.",
-  },
-  {
-    id: 3,
-    title: "Tech Expo",
-    date: "2024-08-20",
-    location: "Chicago",
-    description: "Annual technology exposition.",
-  },
-  {
-    id: 4,
-    title: "Tech Expo",
-    date: "2024-08-20",
-    location: "Chicago",
-    description: "Annual technology exposition.",
-  },
-  {
-    id: 5,
-    title: "Tech Expo",
-    date: "2024-08-20",
-    location: "Chicago",
-    description: "Annual technology exposition.",
-  },
-];
-
-const isPastEvent = (date) => new Date(date) < new Date();
+const isPastEvent = (date) => {
+  return new Date(date) < new Date();
+};
 
 export default function Events() {
-  const [showPast, setShowPast] = useState(false);
+  const { currentUser } = useAuth(); // Auth
+  const [myEventData, setMyEventData] = useState(null); // User Event Data
+  const [showPast, setShowPast] = useState(false); // Show past event
+  const [loading, setLoading] = useState(true); // Loading Screen
+  const [error, setError] = useState(null); // Error Screen
 
-  const filteredEvents = mockEvents.filter((event) =>
-    showPast ? isPastEvent(event.date) : !isPastEvent(event.date)
-  );
+  useEffect(() => {
+    async function fetchMyEventsData() {
+      if (!currentUser?.uid) return;
+
+      try {
+        setLoading(true);
+
+        // Fetch user registered / attended events
+        const myEventFetch = await fetch(
+          `http://localhost:5000/api/atendees/${currentUser.uid}`
+        );
+
+        if (!myEventFetch.ok) {
+          throw new Error("Failed to get the user events data");
+        }
+
+        const myConfirmedEvents = await myEventFetch.json();
+
+        // Fetch Event Details
+        const myEventDetails = await Promise.all(
+          myConfirmedEvents.map(async (item) => {
+            const response = await fetch(
+              `http://localhost:5000/api/events/${item.eventId}`
+            );
+
+            if (!response.ok) {
+              throw new Error("Failed to fetch event " + item.eventId);
+            }
+
+            return response.json();
+          })
+        );
+
+        setMyEventData(myEventDetails);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchMyEventsData();
+  }, []);
+
+  // Filter user event based on hosting date
+  const filteredEvents = myEventData?.filter((event) => {
+    return showPast ? isPastEvent(event.endDate) : !isPastEvent(event.endDate);
+  });
+
+  if (loading) return <div>Loading event...</div>;
+  if (error) return <div>Error: {error}</div>;
+  // if (!event) return <div>Event not found</div>;
 
   return (
     <ProtectedRoute>
@@ -129,7 +147,7 @@ export default function Events() {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredEvents.map((event) => (
                   <EventCard key={event.id} event={event} />
                 ))}

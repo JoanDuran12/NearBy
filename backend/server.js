@@ -3,7 +3,7 @@ const cors = require("cors");
 const { sequelize } = require("./models");
 const userRoutes = require("./routes/userRoutes");
 const eventRoutes = require("./routes/eventRoutes");
-const atendeesRoutes = require("./routes//atendeesRoutes");
+const atendeesRoutes = require("./routes/atendeesRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
-app.use("/api/atendees", eventRoutes);
-
+app.use("/api/atendees", atendeesRoutes);
 
 sequelize
   .sync()

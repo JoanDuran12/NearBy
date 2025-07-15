@@ -1,17 +1,28 @@
-const { DataTypes, NOW } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const User = require("./user");
 const Event = require("./event");
 
 const Atendees = sequelize.define("Atendees", {
-  joined_at: {
-    type: DataTypes.TIME,
-    allowNull: false,
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  is_host: DataTypes.BOOLEAN,
+  isHost: DataTypes.BOOLEAN,
+  firebaseUid: {
+    type: DataTypes.STRING,
+  },
+  eventId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Event,
+      key: "eventId",
+    },
+  },
 });
 
-Atendees.belongsTo(User, { foreignKey: "id", sourceKey: "id" });
-Atendees.belongsTo(Event, { foreignKey: "eventId", sourceKey: "eventId" });
+// Atendees.belongsTo(User, { foreignKey: "userId" });
+// Atendees.belongsTo(Event, { foreignKey: "eventId" });
 
 module.exports = Atendees;

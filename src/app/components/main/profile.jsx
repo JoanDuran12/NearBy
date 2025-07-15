@@ -10,7 +10,7 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container min-h-screen mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* {User Info Profile Section} */}
           <div className="flex items-center justify-between pr-10 pb-6 mb-6 border-b-2 text-md font-semibold">
@@ -31,7 +31,7 @@ export default function Dashboard() {
                 <h1>@JoanDuran1212</h1>
                 <div className="flex gap-1 item-center">
                   <IconCalendar stroke={2} />
-                  <h1>Joined Jan 2024</h1>
+                  <h1>Joined Jun 2025</h1>
                 </div>
               </div>
             </div>
@@ -44,12 +44,12 @@ export default function Dashboard() {
             <div className="flex gap-2 py-4 justify-center items-center shadow-md rounded-xl border border-gray-200">
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               <h3 className="text-md font-semibold ">Attended:</h3>
-              <p className="text-md font-semibold">12</p>
+              <p className="text-md font-semibold">3</p>
             </div>
             <div className="flex gap-2 py-4 justify-center items-center shadow-md rounded-xl border border-gray-200">
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
               <h3 className="text-md font-semibold ">Upcoming:</h3>
-              <p className="text-md font-semibold">3</p>
+              <p className="text-md font-semibold">2</p>
             </div>
             <div className="flex gap-2 py-4 justify-center items-center shadow-md rounded-xl border border-gray-200">
               <div className="w-3 h-3 bg-purple-500 rounded-full"></div>

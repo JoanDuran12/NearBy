@@ -17,10 +17,19 @@ const Event = sequelize.define("Event", {
   startTime: DataTypes.TIME,
   endTime: DataTypes.TIME,
   location: DataTypes.STRING,
-  description: DataTypes.STRING,
+  latitude: DataTypes.FLOAT,
+  longitude: DataTypes.FLOAT,
+  description: DataTypes.TEXT,
   category: DataTypes.STRING,
   approval: DataTypes.BOOLEAN,
   capacity: DataTypes.INTEGER,
+  firebaseUid: {
+    type: DataTypes.STRING,
+    references: {
+      model: User,
+      key: "firebaseUid",
+    },
+  },
 });
 
 Event.belongsTo(User, { foreignKey: "firebaseUid", sourceKey: "firebaseUid" });

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState, useRef } from "react";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { useRouter } from "next/navigation";
 import {
@@ -11,6 +11,9 @@ import {
   IconInnerShadowBottom,
   IconCategory,
 } from "@tabler/icons-react";
+import { useGoogleMapsLoader } from "@/app/api/googleMap/config";
+import { StandaloneSearchBox } from "@react-google-maps/api";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
@@ -19,13 +22,18 @@ export default function CreateEvent() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
+  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useState(null);
   const [description, setDescription] = useState("");
   const [requiredApproval, setRequiredApproval] = useState(false);
   const [capacity, setCapacity] = useState("");
   const [category, setCategory] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const inputRef = useRef(null);
   const router = useRouter();
+  const { isLoaded } = useGoogleMapsLoader();
+  const { currentUser } = useAuth(); // Auth
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -56,8 +64,16 @@ export default function CreateEvent() {
     setEndTime(e.target.value);
   };
 
-  const handleLocation = (e) => {
-    setLocation(e.target.value);
+  const handleLocation = () => {
+    const places = inputRef.current.getPlaces();
+    if (places && places.length > 0) {
+      const place = places[0];
+      const loc = place.geometry.location;
+
+      setLatitude(loc.lat()); // Latitude
+      setLongitude(loc.lng()); // Longitude
+      setLocation(place.formatted_address.toString()); // Save formatted address or name
+    }
   };
 
   const handleDescription = (e) => {
@@ -88,17 +104,22 @@ export default function CreateEvent() {
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
       formData.append("startTime", startTime);
-      formData.append("endtime", endTime);
+      formData.append("endTime", endTime);
       formData.append("location", location);
+      formData.append("longitude", longitude);
+      formData.append("latitude", latitude);
       formData.append("description", description);
       formData.append("category", category);
       formData.append("approval", requiredApproval);
       formData.append("capacity", capacity);
+      formData.append("firebaseUid", currentUser.uid);
 
       const response = await fetch(`http://localhost:5000/api/events`, {
         method: "POST",
         body: formData,
       });
+
+      console.log(formData.get("firebaseUid"));
 
       if (!response.ok) {
         console.log(response);
@@ -110,9 +131,11 @@ export default function CreateEvent() {
     }
   };
 
+  console.log(isLoaded);
+
   return (
     <ProtectedRoute>
-      <div className="flex flex-col items-center justify-center w-screen py-10 font-semibold text-base">
+      <div className="flex flex-col items-center justify-center w-screen my-20 font-semibold text-base">
         <div className="flex flex-col item-center justify-center gap-5 md:w-1/2 lg:w-1/3 ">
           <div className="w-full aspect-[4/3] object-scale-down rounded-xl overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-100 relative">
             {previewImage ? (
@@ -126,15 +149,14 @@ export default function CreateEvent() {
                 Upload Event Image ( Ideal Ratio is 1:1 )
               </span>
             )}
-            
-              <input
-                type="file"
-                accept="image/*"
-                name="eventPic"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            
+
+            <input
+              type="file"
+              accept="image/*"
+              name="eventPic"
+              onChange={handleImageChange}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
           </div>
           <div className="flex flex-col bg-white rounded-lg">
             <textarea
@@ -184,13 +206,20 @@ export default function CreateEvent() {
             </div>
             <div className="flex px-6 py-4 mb-8 shadow-lg rounded-xl gap-2">
               <IconMapPin stroke={2} />
-              <input
-                type="text"
-                placeholder="Set an event location"
-                className="w-full outline-0"
-                value={location}
-                onChange={handleLocation}
-              />
+              {isLoaded && (
+                <div className="w-full">
+                  <StandaloneSearchBox
+                    onLoad={(ref) => (inputRef.current = ref)}
+                    onPlacesChanged={handleLocation}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Set an event location"
+                      className="w-full outline-0"
+                    />
+                  </StandaloneSearchBox>
+                </div>
+              )}
             </div>
             <div className="flex px-6 py-4 mb-8 shadow-lg rounded-xl w-full gap-2">
               <IconFileDescription stroke={2} />
