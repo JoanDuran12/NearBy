@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import { formatTimeToAMPM } from "@/app/components/EventDetails";
 
 export default function EventCard({ event }) {
   const truncateText = (text, maxLength) => {
@@ -35,7 +35,8 @@ export default function EventCard({ event }) {
                 month: "short",
                 day: "numeric",
                 year: "numeric",
-              })}
+              })}{" "}
+              at {event.startTime ? formatTimeToAMPM(event.startTime) : "N/A"}
             </span>
             <Link
               href={`/events/${event.eventId}`}
