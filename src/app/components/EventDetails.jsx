@@ -11,6 +11,18 @@ import {
   IconMapPin,
   IconDoorExit,
 } from "@tabler/icons-react";
+import { useGoogleMapsLoader } from "@/app/api/googleMap/config";
+import { GoogleMap, Marker } from "@react-google-maps/api";
+
+// Convert standard 24 time to 12H AM/PM
+export function formatTimeToAMPM(timeStr) {
+  // timeStr is "HH:MM:SS"
+  const [hourStr, minute] = timeStr.split(":");
+  let hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12; // Convert 0 to 12 for 12 AM
+  return `${hour}:${minute} ${ampm}`;
+}
 
 export default function EventDetailsPage() {
   const params = useParams();
@@ -21,16 +33,7 @@ export default function EventDetailsPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Pop Up Leave Event Confirmation
   const [isRegistered, setIsRegistered] = useState(null); // User is registered?
   const [isHost, setIsHost] = useState(false); // User is Host of the event
-
-  // Convert standard 24 time to 12H AM/PM
-  function formatTimeToAMPM(timeStr) {
-    // timeStr is "HH:MM:SS"
-    const [hourStr, minute] = timeStr.split(":");
-    let hour = parseInt(hourStr, 10);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    hour = hour % 12 || 12; // Convert 0 to 12 for 12 AM
-    return `${hour}:${minute} ${ampm}`;
-  }
+  const { isLoaded } = useGoogleMapsLoader();
 
   // Fetch event data and event registration status
   useEffect(() => {
@@ -221,12 +224,40 @@ export default function EventDetailsPage() {
           </div>
         </div>
       </div>
-      <div className="shadow-lg rounded-xl bg-white p-6 mt-8">
+      <div className="shadow-lg rounded-xl bg-white p-6 my-8">
         <h3 className="font-bold text-md md:text-xl mb-2">About event:</h3>
         <p className="text-gray-700 text-sm md:text-base ">
           {event.description || "No description available."}
         </p>
       </div>
+      {isLoaded && (
+        <div
+          className="w-full h-64 rounded-lg overflow-hidden cursor-pointer shadow-sm transition hover:opacity-80"
+          onClick={() =>
+            window.open(
+              `https://www.google.com/maps?q=${event.latitude},${event.longitude}`,
+              "_blank"
+            )
+          }
+        >
+          <GoogleMap
+            center={{ lat: event.latitude, lng: event.longitude }}
+            zoom={18}
+            mapContainerStyle={{
+              width: "100%",
+              height: "300px",
+              borderRadius: "20px",
+            }}
+            options={{
+              disableDefaultUI: true,
+              gestureHandling: "none",
+              zoomControl: false,
+            }}
+          >
+            <Marker position={{ lat: event.latitude, lng: event.longitude }} />
+          </GoogleMap>
+        </div>
+      )}
 
       {/* Leave Event Confirmation Modal */}
       {isDropdownOpen && (

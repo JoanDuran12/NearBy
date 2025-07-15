@@ -17,6 +17,8 @@ const Event = sequelize.define("Event", {
   startTime: DataTypes.TIME,
   endTime: DataTypes.TIME,
   location: DataTypes.STRING,
+  latitude: DataTypes.FLOAT,
+  longitude: DataTypes.FLOAT,
   description: DataTypes.TEXT,
   category: DataTypes.STRING,
   approval: DataTypes.BOOLEAN,
