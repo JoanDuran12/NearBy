@@ -103,7 +103,7 @@ export default function Header() {
         {/* Logo and Title */}
         <Link
           className="flex gap-1 justify-center items-center md:text-xl font-bold"
-          href="/"
+          href={currentUser ? "/home" : "/"}
         >
           <IconTicket stroke={2} className="size-7" />
           <h2>NearBy</h2>
