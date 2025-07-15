@@ -13,6 +13,7 @@ import {
 } from "@tabler/icons-react";
 import { useGoogleMapsLoader } from "@/app/api/googleMap/config";
 import { StandaloneSearchBox } from "@react-google-maps/api";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function CreateEvent() {
   const [eventName, setEventName] = useState("");
@@ -32,6 +33,7 @@ export default function CreateEvent() {
   const inputRef = useRef(null);
   const router = useRouter();
   const { isLoaded } = useGoogleMapsLoader();
+  const { currentUser } = useAuth(); // Auth
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -110,11 +112,14 @@ export default function CreateEvent() {
       formData.append("category", category);
       formData.append("approval", requiredApproval);
       formData.append("capacity", capacity);
+      formData.append("firebaseUid", currentUser.uid);
 
       const response = await fetch(`http://localhost:5000/api/events`, {
         method: "POST",
         body: formData,
       });
+
+      console.log(formData.get("firebaseUid"));
 
       if (!response.ok) {
         console.log(response);
@@ -202,7 +207,7 @@ export default function CreateEvent() {
             <div className="flex px-6 py-4 mb-8 shadow-lg rounded-xl gap-2">
               <IconMapPin stroke={2} />
               {isLoaded && (
-                <div>
+                <div className="w-full">
                   <StandaloneSearchBox
                     onLoad={(ref) => (inputRef.current = ref)}
                     onPlacesChanged={handleLocation}

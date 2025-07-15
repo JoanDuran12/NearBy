@@ -23,6 +23,13 @@ const Event = sequelize.define("Event", {
   category: DataTypes.STRING,
   approval: DataTypes.BOOLEAN,
   capacity: DataTypes.INTEGER,
+  firebaseUid: {
+    type: DataTypes.STRING,
+    references: {
+      model: User,
+      key: "firebaseUid",
+    },
+  },
 });
 
 Event.belongsTo(User, { foreignKey: "firebaseUid", sourceKey: "firebaseUid" });
